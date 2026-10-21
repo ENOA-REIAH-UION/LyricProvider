@@ -12,6 +12,9 @@ on:
         default: debug
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   build-and-release:
     name: Build and Release Apps
@@ -39,33 +42,22 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: wrapper
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
           cache-disabled: false
 
-      - name: Decode Keystore
-        if: ${{ github.event.inputs.build-type == 'release' || env.BUILD_TYPE == 'release' }}
-        run: |
-          echo "${{ secrets.SIGNING_KEY }}" | base64 -d > release.jks
-
-      - name: Build APKs with Caching
+      - name: Build APKs
         run: |
           if [ "$BUILD_TYPE" = "release" ]; then
             ./gradlew assembleRelease --build-cache
           else
             ./gradlew assembleDebug --build-cache
           fi
-        env:
-          RELEASE_STORE_FILE: ../release.jks
-          RELEASE_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
-          RELEASE_KEY_ALIAS: ${{ secrets.ALIAS }}
-          RELEASE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Collect APKs to flat directory
         run: |
           mkdir -p collected-apks
 
-          # 复制所有 APK 文件
-          find . -name "*.apk" -path "*/build/outputs/apk/${{ env.BUILD_TYPE }}/*" -exec cp {} collected-apks/ \;
+          find . -name "*.apk" -path "*/build/outputs/apk/${BUILD_TYPE}/*" -exec cp {} collected-apks/ \;
 
           echo "Collected files:"
           ls -lh collected-apks/
@@ -77,9 +69,3 @@ jobs:
           path: collected-apks/
           if-no-files-found: error
           archive: false
-
-      - name: Cleanup
-        if: always()
-        run: |
-          rm -f release.jks || true
-          rm -rf collected-apks || true
