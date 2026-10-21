@@ -222,7 +222,7 @@ internal class CloudMusic(
             playerPackageName = packageName,
             logo = ProviderLogo.fromSvg(ICON)
         ).apply {
-            player.setDisplayTranslation(initialTranslationType == TRANSLATION_TYPE)
+            player.setDisplayTranslation(true)
             player.setDisplayRoma(initialTranslationType == ROMANIZATION_TYPE)
             register()
         }
@@ -287,7 +287,7 @@ internal class CloudMusic(
         }
 
         logger.debug("Translation option changed: type=$normalizedType")
-        provider?.player?.setDisplayTranslation(normalizedType == TRANSLATION_TYPE)
+        provider?.player?.setDisplayTranslation(true)
         provider?.player?.setDisplayRoma(normalizedType == ROMANIZATION_TYPE)
     }
 
