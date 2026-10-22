@@ -32,6 +32,7 @@
 | 🧂 **Salt Music**                    | `salt-player-music` | Adapted based on Meizu standard lyric interface    |
 | 🎵 **Qishui Music**                  | `qishui-music`      | Supports dynamic lyrics, translated lyrics         |
 | 🎵 **MusicFree**                     | `music-free`        | Support translation                                |
+| 🎵 **Namida**                        | `namida`            | Supports per-word lyrics and original/translation lines; **requires enabling status bar lyrics in the app** |
 
 > **Netease module compatibility:** Starting with 1.1.0-beta1, `163-music` ships as a single Modern API APK and requires LSPosed Modern API 101 or newer. It cannot be loaded by LSPosed 1.9.2, which only supports the Legacy API. All other provider modules remain on the Legacy API and are unaffected.
 

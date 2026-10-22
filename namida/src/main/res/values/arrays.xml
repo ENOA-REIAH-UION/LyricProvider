@@ -1,0 +1,10 @@
+<resources>
+    <string-array name="xposed_scope">
+        <item>com.msob7y.namida</item>
+        <item>com.msob7y.namida.debug</item>
+    </string-array>
+    <string-array name="lyricon_module_tags">
+        <item>$syllable</item>
+        <item>$translation</item>
+    </string-array>
+</resources>

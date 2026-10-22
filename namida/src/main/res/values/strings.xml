@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Namida歌词支持</string>
+    <string name="xposed_description">为词幕提供 Namida 播放器的歌词</string>
+    <string name="lyricon_module_description">提供 Namida 歌词。请在 Namida「设置 - 附加 - 状态栏歌词」中开启 ColorOS &amp; HyperLyric 集成。</string>
+</resources>
