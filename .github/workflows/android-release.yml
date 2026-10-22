@@ -39,19 +39,22 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Setup Gradle with Caching
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: wrapper
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-          cache-disabled: false
 
       - name: Build APKs
         run: |
+          BUILD_TASK=assembleDebug
           if [ "$BUILD_TYPE" = "release" ]; then
-            ./gradlew assembleRelease --build-cache
-          else
-            ./gradlew assembleDebug --build-cache
+            BUILD_TASK=assembleRelease
           fi
+
+          # Maven Central 偶发不可达会让构建脚本的 classpath 解析直接失败（报某个构件
+          # Could not find），与项目配置无关。失败时刷新依赖元数据再重试一次。
+          ./gradlew "$BUILD_TASK" --build-cache \
+            || ./gradlew "$BUILD_TASK" --build-cache --refresh-dependencies
 
       - name: Collect APKs to flat directory
         run: |
